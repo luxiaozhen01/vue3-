@@ -3,11 +3,12 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { ref , reactive} from 'vue'
 import useUserStore from '@/store/modules/user'
 import { ElMessage,ElNotification } from 'element-plus'
-import { useRouter } from 'vue-router'
+import { useRouter,useRoute } from 'vue-router'
 import { getTime } from '@/utils/time'
 
 let userStore = useUserStore()
 let $router = useRouter()
+let $route = useRoute()
 let loginForm = reactive({
     username:'',
     password:'',
@@ -45,7 +46,8 @@ let login = async() => {
         })
         
         loading.value = false
-        $router.replace('/')
+        let redirect:any = $route.query.redirect || '/'
+        $router.replace({path:redirect})
     }catch(error){
         ElMessage ({
             type:'error',
@@ -54,7 +56,6 @@ let login = async() => {
         loading.value = false
     }
 } 
-
 </script>
 
 <template>

@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia'
-import { reqLogin } from '@/api/user'
+import { reqLogin,reqUserInfo } from '@/api/user'
 import type { loginData,loginResponse } from '@/api/user/type'
 import type { userState } from './types/index'
-import { GET_TOKEN, SET_TOKEN } from '@/utils/token'
+import { GET_TOKEN, SET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 const useUserStore = defineStore('User',{
     state:():userState=>{
         return {
-            token:GET_TOKEN('TOKEN')
+            token:GET_TOKEN('TOKEN'),
+            username:'',
+            avatar:'',
         }
     },
     actions:{
@@ -19,6 +21,22 @@ const useUserStore = defineStore('User',{
             }else{
                 return Promise.reject(new Error(result.data.message))
             }
+        },
+        async getUserInfo(){
+            let result = await reqUserInfo()
+            if(result.code==200){
+                this.username = result.data.checkUser.username
+                this.avatar = result.data.checkUser.avatar
+                return 'ok'
+            }else{
+                return Promise.reject('获取失败！')
+            }
+        },
+        logout(){
+            this.token = ''
+            this.username = ''
+            this.avatar = ''
+            REMOVE_TOKEN()
         }
     },
     getters:{

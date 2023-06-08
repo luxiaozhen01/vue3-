@@ -2,7 +2,9 @@
 import { ref } from 'vue'
 import { ArrowRight, Refresh, FullScreen, Setting } from '@element-plus/icons-vue'
 import useLayoutSettingStore  from '@/store/modules/layoutSetting'
-import { useRoute } from "vue-router"
+import { useRoute,useRouter } from "vue-router"
+import useUserStore from "@/store/modules/user"
+let userStore = useUserStore()
 let LayoutSettingStore = useLayoutSettingStore()
 let changeIcon = ()=>{
     LayoutSettingStore.fold = !LayoutSettingStore.fold   
@@ -19,6 +21,11 @@ let fullScreen = ()=>{
     }else{
         document.exitFullscreen()
     }
+}
+let $router = useRouter()
+let logout = ()=>{
+    userStore.logout()
+    $router.replace({path:'/login',query:{redirect:$route.path}})
 }
 </script>
 
@@ -39,17 +46,17 @@ let fullScreen = ()=>{
             <el-button :icon="Refresh" circle @click="refresh"/>
             <el-button :icon="FullScreen" circle @click="fullScreen"/>
             <el-button :icon="Setting" circle />
-            <img class="img" src="../../../public/logo.png" alt="头像">
+            <img class="img" :src="userStore.avatar" alt="">
             <el-dropdown class="dropdown">
                 <span class="el-dropdown-link">
-                    admin
+                    {{ userStore.username }}
                     <el-icon class="el-icon--right">
                         <arrow-down />
                     </el-icon>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>退出登录</el-dropdown-item>
+                        <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -88,6 +95,7 @@ let fullScreen = ()=>{
             width: 30px;
             height: 30px;
             margin: 0 10px;
+            border-radius: 50%;
         }
         .dropdown{
             margin-right: 5px;

@@ -11,7 +11,7 @@ import '@/styles/index.scss'
 import router from '@/router/index'
 import store from './store'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
+import '@/permission'
 
 const app = createApp(App)
 
