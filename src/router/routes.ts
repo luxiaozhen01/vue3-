@@ -54,6 +54,7 @@ const constantRoutes = [
         path:'/acl',
         component:()=>import('@/layout/index.vue'),
         name:'acl',
+        redirect:"/acl/user",
         meta:{
             title:'权限管理',
             hidden:false,
@@ -97,6 +98,7 @@ const constantRoutes = [
         path:'/product',
         component:()=>import('@/layout/index.vue'),
         name:'product',
+        redirect:"/product/attr",
         meta:{
             title:'商品管理',
             hidden:false,
