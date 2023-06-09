@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue'
-import { ref , reactive} from 'vue'
+import { ref , reactive,onMounted} from 'vue'
 import useUserStore from '@/store/modules/user'
 import { ElMessage,ElNotification } from 'element-plus'
 import { useRouter,useRoute } from 'vue-router'
@@ -10,11 +10,14 @@ let userStore = useUserStore()
 let $router = useRouter()
 let $route = useRoute()
 let loginForm = reactive({
-    username:'',
-    password:'',
+    username:'admin',
+    password:'atguigu123',
 })
 let loading = ref(false)
 let loginForms = ref()
+let checked = ref(false)
+
+onMounted(()=>{})
 let validatePassUsername = (rule: any, value: any, callback: any)=>{
     if(value.length>3 && value.length < 9){
         callback()
@@ -56,6 +59,12 @@ let login = async() => {
         loading.value = false
     }
 } 
+let keyDown = ($event:any)=>{
+    if($event.keyCode == 13){
+        login()
+    }
+}
+window.addEventListener("keydown",keyDown);
 </script>
 
 <template>
@@ -73,7 +82,10 @@ let login = async() => {
                         <el-input type="password" :prefix-icon="Lock" show-password v-model="loginForm.password" clearable></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" class="login_btn" @click.enter="login" :loading="loading">登录</el-button>
+                        <el-checkbox v-model="checked" label="记住密码" size="large" style="color: white;"/>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" class="login_btn" @click="login" @keyup.enter="login" :loading="loading">登录</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -107,7 +119,7 @@ let login = async() => {
             .login_btn{
                 width: 100%;
                 height: 40px;
-                margin-top: 20px;
+                // margin-top: 20px;
             }
         }
     }

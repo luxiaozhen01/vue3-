@@ -2,7 +2,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import useUserStore from '@/store/modules/user'
 let request = axios.create({
-    baseURL:'/api',
+    baseURL:import.meta.env.VITE_APP_BASE_API,
     timeout:5000
 })
 

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { reqLogin,reqUserInfo } from '@/api/user'
-import type { loginData,loginResponse } from '@/api/user/type'
+import { reqLogin,reqUserInfo,reqLogout } from '@/api/user'
+import type { loginFormData,loginResponseData,userInfoResponseData } from '@/api/user/type'
 import type { userState } from './types/index'
 import { GET_TOKEN, SET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 const useUserStore = defineStore('User',{
@@ -12,31 +12,36 @@ const useUserStore = defineStore('User',{
         }
     },
     actions:{
-       async login(data:loginData){
-            let result:loginResponse = await reqLogin(data)
-            if(result.code == 200){
-                this.token = (result.data.token as string)
-                SET_TOKEN(result.data.token as string)
-                return 'ok'
+       async login(data:loginFormData){
+            let result:loginResponseData = await reqLogin(data)
+            if(result.code == '200'){
+                this.token = (result.data as string)
+                SET_TOKEN(result.data as string)
+                return result.message
             }else{
-                return Promise.reject(new Error(result.data.message))
+                return Promise.reject(new Error(result.data))
             }
         },
         async getUserInfo(){
             let result = await reqUserInfo()
-            if(result.code==200){
-                this.username = result.data.checkUser.username
-                this.avatar = result.data.checkUser.avatar
+            if(result.code == '200'){
+                this.username = result.data.name
+                this.avatar = result.data.avatar
                 return 'ok'
             }else{
                 return Promise.reject('获取失败！')
             }
         },
-        logout(){
-            this.token = ''
-            this.username = ''
-            this.avatar = ''
-            REMOVE_TOKEN()
+        async logout(){
+            let result = await reqLogout()
+            if(result.code == 200){
+                this.token = ''
+                this.username = ''
+                this.avatar = ''
+                REMOVE_TOKEN()
+            }else{
+                Promise.reject(new Error(result.message))
+            }
         }
     },
     getters:{

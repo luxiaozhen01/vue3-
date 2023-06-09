@@ -4,6 +4,7 @@ import { ArrowRight, Refresh, FullScreen, Setting } from '@element-plus/icons-vu
 import useLayoutSettingStore  from '@/store/modules/layoutSetting'
 import { useRoute,useRouter } from "vue-router"
 import useUserStore from "@/store/modules/user"
+import { ElMessage } from 'element-plus'
 let userStore = useUserStore()
 let LayoutSettingStore = useLayoutSettingStore()
 let changeIcon = ()=>{
@@ -23,9 +24,13 @@ let fullScreen = ()=>{
     }
 }
 let $router = useRouter()
-let logout = ()=>{
-    userStore.logout()
+let logout = async ()=>{
+    await userStore.logout()
     $router.replace({path:'/login',query:{redirect:$route.path}})
+    ElMessage ({
+        type:'success',
+        message:'退出登录成功！'
+    })
 }
 </script>
 
