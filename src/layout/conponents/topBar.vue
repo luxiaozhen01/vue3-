@@ -75,7 +75,7 @@ let logout = async ()=>{
     height: 100%;
     display: flex;
     justify-content: space-between;
-
+    background: linear-gradient(to right ,rgb(242, 242, 242),rgb(185, 183, 183));;
     .topBar_left {
         display: flex;
         align-items: center;

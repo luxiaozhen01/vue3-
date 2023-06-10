@@ -34,7 +34,6 @@ let LayoutSettingStore = useLayoutSettingStore()
     .layout_container{
         width: 100%;
         height: 100vh;
-        background-color: red;
         .layout_slider{
             width: $layout_slider_width;
             height: 100vh;
@@ -59,6 +58,7 @@ let LayoutSettingStore = useLayoutSettingStore()
         .layout_content{
             width: calc(100% - $layout_slider_width);
             height: calc(100vh - $layout_topBar_height);
+            padding: 20px;
             position: absolute;
             top: $layout_topBar_height;
             right: 0;
