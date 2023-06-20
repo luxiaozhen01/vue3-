@@ -8,8 +8,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "moduleResolution": "node",
-    // 同时加上这一句
-    "types": ["element-plus/global"],
+    // "moduleResolution": "node",
+    // // 同时加上这一句
+    // "types": ["element-plus/global"],
   }
 }
